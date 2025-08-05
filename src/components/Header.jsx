@@ -39,17 +39,28 @@ const Header = () => {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarContent">
-          <form className="d-flex flex-column flex-lg-row w-100 my-3 my-lg-0" role="search">
+          <form className="d-flex w-100 my-3 my-lg-0" role="search">
             <input
-              className="form-control rounded-0 rounded-top"
+              className="form-control rounded-start"
               type="search"
               placeholder="Hoy estoy buscando..."
               aria-label="Search"
+              style={{
+                minWidth: 0,
+                fontSize: '0.95rem',
+                fontFamily: "'Montserrat', 'Arial', sans-serif",
+                borderRight: 'none'
+              }}
             />
             <button
-              className="btn btn-light rounded-0 rounded-bottom"
+              className="btn btn-light rounded-end d-flex align-items-center justify-content-center"
               type="submit"
-              style={{ borderTop: 'none' }}
+              style={{
+                borderLeft: 'none',
+                padding: '0 14px',
+                fontSize: '1.2rem',
+                boxShadow: 'none'
+              }}
             >
               <i className="pi pi-search"></i>
             </button>
