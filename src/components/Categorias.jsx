@@ -1,220 +1,250 @@
 import { useState } from 'react';
-import 'primeicons/primeicons.css';
 
-const Categorias = () => {
-  const [showSidebar, setShowSidebar] = useState(false);
+const categorias = [
+  'AAA Modernos',
+  'Indie destacados',
+  'Clásicos y remasterizados',
+  'Estrategia',
+  'Mundo abierto',
+  'Móviles populares',
+  'Multijugador online',
+  'Retro / Emulación',
+  'Misc / Otros'
+];
 
-  const games = [
-    'Grand Theft Auto V',
-    'Minecraft',
-    'Fortnite',
-    'Valorant',
-    'League of Legends',
-    'Counter-Strike 2',
-    'Call of Duty: MW III',
-    'FIFA 24',
-    'Cyberpunk 2077',
-    'Elden Ring',
-    'The Legend of Zelda',
-    'Super Mario Bros Wonder',
-    'Hogwarts Legacy',
-    'Red Dead Redemption 2',
-    'Apex Legends',
-    'Among Us',
-    'Fall Guys',
-    'Rocket League',
-    'Overwatch 2',
-    'Genshin Impact',
-    'Roblox',
-    'Terraria',
-    'Stardew Valley',
-    'The Sims 4',
-    'Forza Horizon 5',
-  ];
+const plataformas = [
+  'PC',
+  'PlayStation',
+  'Xbox',
+  'Android',
+  'iOS',
+  'Nintendo Switch'
+];
 
-  const items = [
-    { icon: 'pi-desktop', label: 'PC' },
-    { icon: 'pi-android', label: 'Android' },
-    { icon: 'pi-playstation', label: 'PlayStation' },
-    { icon: 'pi-xbox', label: 'Xbox' },
-    { icon: 'pi-star', label: 'Top Juegos' },
-    { icon: 'pi-list', label: 'Todos los Juegos' },
-  ];
+const Categorias = ({ onPlataformaSeleccionada, onCategoriaSeleccionada }) => {
+  const [plataformaActiva, setPlataformaActiva] = useState(null);
+  const [categoriaActiva, setCategoriaActiva] = useState(null);
+  const [showCategorias, setShowCategorias] = useState(false);
+
+  const handlePlataformaClick = (nombre) => {
+    setPlataformaActiva(nombre);
+    if (onPlataformaSeleccionada) onPlataformaSeleccionada(nombre);
+  };
+
+  const handleCategoriaClick = (nombre) => {
+    setCategoriaActiva(nombre);
+    if (onCategoriaSeleccionada) onCategoriaSeleccionada(nombre);
+    setShowCategorias(false);
+  };
 
   return (
     <>
-      {/* Barra horizontal */}
+      {/* Barra de navegación mejorada */}
       <nav
         className="navbar navbar-dark w-100"
-        style={{ backgroundColor: '#1D52F2', padding: '8px 0' }}
+        style={{
+          backgroundColor: '#1D52F2',
+          padding: '12px 0',
+          borderBottom: '1px solid #1a48db',
+        }}
       >
-        <div className="container-fluid px-2 px-lg-4 d-flex align-items-center flex-wrap">
-          <button
-            className="text-white fw-bold d-flex align-items-center me-3 border-0 bg-transparent"
-            style={{
-              fontSize: '1rem',
-              fontFamily: "'Montserrat', 'Arial', sans-serif",
-              textShadow: '1px 1px 2px #00000030',
-              whiteSpace: 'nowrap',
-              gap: '8px',
-              cursor: 'pointer',
-              padding: '5px 0',
-            }}
-            onClick={() => setShowSidebar(true)}
-          >
-            <i className="pi pi-th-large me-2"></i>
-            Explora Videojuegos
-          </button>
-
+        <div className="container-fluid px-2 px-lg-4 d-flex flex-column align-items-start">
+          {/* Botón "Categorías" + Plataformas en fila horizontal con scroll */}
           <div
-            className="d-flex overflow-x-auto overflow-lg-visible w-100 justify-content-lg-center"
+            className="d-flex align-items-center gap-2 w-100"
             style={{
-              gap: '8px',
+              overflowX: 'auto',
+              paddingBottom: '6px',
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
+              padding: '0 8px',
             }}
           >
-            <style>{`
+            <style jsx>{`
               div::-webkit-scrollbar {
                 display: none;
               }
-              @media (max-width: 991px) {
-                .btn-categoria {
-                  font-size: 0.85rem !important;
-                  padding: 6px 10px !important;
-                }
+              .btn-plataforma {
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 600;
+                font-size: 0.9rem;
+                padding: 8px 16px;
+                border-radius: 50px;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                background: rgba(255, 255, 255, 0.15);
+                color: white;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                white-space: nowrap;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
               }
-              @media (min-width: 992px) {
-                .btn-categoria {
-                  font-size: 0.95rem !important;
-                  padding: 8px 16px !important;
+              .btn-plataforma:hover {
+                background: rgba(255, 255, 255, 0.25);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+              }
+              .btn-plataforma.active {
+                background: #fff;
+                color: #1D52F2;
+                font-weight: 700;
+                border-color: #fff;
+                box-shadow: 0 4px 14px rgba(255, 255, 255, 0.3);
+              }
+              .btn-categoria-principal {
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 700;
+                font-size: 0.95rem;
+                padding: 9px 18px;
+                border-radius: 50px;
+                background: linear-gradient(90deg, #4a7bff, #1d52f2);
+                color: white;
+                border: none;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                white-space: nowrap;
+                box-shadow: 0 3px 10px rgba(74, 123, 255, 0.4);
+              }
+              .btn-categoria-principal:hover {
+                background: linear-gradient(90deg, #1d52f2, #0c3ed9);
+                transform: translateY(-1px);
+                box-shadow: 0 5px 16px rgba(74, 123, 255, 0.5);
+              }
+              @media (max-width: 600px) {
+                .btn-plataforma,
+                .btn-categoria-principal {
+                  font-size: 0.85rem;
+                  padding: 7px 14px;
                 }
               }
             `}</style>
 
-            {items.map(({ icon, label }) => (
+            {/* Botón Categorías (más elegante y compacto) */}
+            <button
+              className="btn-categoria-principal"
+              onClick={() => setShowCategorias(true)}
+              aria-label="Abrir categorías"
+            >
+              📂 Categorías
+            </button>
+
+            {/* Botones de plataformas */}
+            {plataformas.map((plataforma) => (
               <button
-                key={label}
-                className="btn btn-outline-light rounded-pill text-nowrap d-flex align-items-center btn-categoria"
-                style={{
-                  fontFamily: "'Montserrat', 'Arial', sans-serif",
-                  fontWeight: 'bold',
-                  textShadow: '1px 1px 2px #00000030',
-                  gap: '8px',
-                  border: '1px solid rgba(255,255,255,0.4)',
-                  transition: 'all .2s ease',
-                  color: '#fff',
-                  backgroundColor: 'transparent',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.backgroundColor = '#fff';
-                  e.currentTarget.style.color = '#1D52F2';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.color = '#fff';
-                }}
+                key={plataforma}
+                className={`btn-plataforma${plataformaActiva === plataforma ? ' active' : ''}`}
+                onClick={() => handlePlataformaClick(plataforma)}
+                aria-pressed={plataformaActiva === plataforma}
               >
-                <i className={`pi ${icon}`}></i>
-                {label}
+                {plataforma}
               </button>
             ))}
           </div>
         </div>
       </nav>
 
-      {/* Sidebar de juegos */}
-      {showSidebar && (
+      {/* Panel lateral de categorías (diseño moderno) */}
+      {showCategorias && (
         <div
-          className="position-fixed top-0 start-0 vw-100 vh-100"
-          style={{ zIndex: 1050, background: 'rgba(0,0,0,0.5)' }}
-          onClick={() => setShowSidebar(false)}
+          className="position-fixed top-0 start-0 vh-100 d-flex flex-column"
+          style={{
+            width: '80vw',
+            maxWidth: '300px',
+            backgroundColor: '#f8f9fa',
+            boxShadow: '4px 0 20px rgba(0, 0, 0, 0.15)',
+            zIndex: 2000,
+            animation: 'slideInLeft 0.3s ease-out',
+            borderTopRightRadius: '16px',
+            borderBottomRightRadius: '16px',
+            padding: '24px 16px',
+          }}
         >
-          <aside
-            className="bg-white h-100 shadow-lg"
-            style={{
-              width: '80vw',
-              maxWidth: '320px',
-              minWidth: '150px',
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              borderTopRightRadius: '16px',
-              borderBottomRightRadius: '16px',
-              boxShadow: '0 0 24px #0002',
-              display: 'flex',
-              flexDirection: 'column',
-              animation: 'slideInLeft .3s',
-            }}
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
-              <span
-                className="fw-bold"
-                style={{
-                  fontSize: '1rem',
-                  fontFamily: "'Montserrat', 'Arial', sans-serif",
-                  textShadow: '1px 1px 2px #00000030',
-                }}
-              >
-                <i className="pi pi-th-large me-2"></i>
-                Todos los Juegos
-              </span>
+          {/* Encabezado */}
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h5
+              style={{
+                margin: 0,
+                fontWeight: 'bold',
+                color: '#1D52F2',
+                fontSize: '1.2rem',
+              }}
+            >
+              📂 Categorías
+            </h5>
+            <button
+              className="btn-close"
+              style={{ fontSize: '1.2rem', color: '#555' }}
+              onClick={() => setShowCategorias(false)}
+              aria-label="Cerrar panel"
+            ></button>
+          </div>
+
+          {/* Lista de categorías */}
+          <div className="d-flex flex-column" style={{ gap: '10px' }}>
+            {categorias.map((cat) => (
               <button
-                className="btn-close"
-                aria-label="Cerrar"
-                style={{ fontSize: '1.1rem' }}
-                onClick={() => setShowSidebar(false)}
-              ></button>
-            </div>
-            <ul className="list-unstyled flex-grow-1 overflow-auto px-2 py-2 mb-0">
-              {games.map((g) => (
-                <li
-                  key={g}
-                  className="py-1 px-2 border-bottom"
-                  style={{
-                    fontFamily: "'Montserrat', 'Arial', sans-serif",
-                    fontSize: '0.8rem', // más pequeño
-                    color: '#1D52F2',
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                    borderRadius: '8px',
-                    transition: 'background .2s',
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#f0f4ff'}
-                  onMouseLeave={e => e.currentTarget.style.background 
-                    = 'transparent'}
-                >
-                  {g}
-                </li>
-              ))}
-            </ul>
-          </aside>
-          <style>{`
+                key={cat}
+                className="btn"
+                style={{
+                  textAlign: 'left',
+                  padding: '12px 16px',
+                  borderRadius: '12px',
+                  fontWeight: categoriaActiva === cat ? 'bold' : 'normal',
+                  backgroundColor: categoriaActiva === cat ? '#1D52F2' : '#e9ecef',
+                  color: categoriaActiva === cat ? '#fff' : '#333',
+                  border: 'none',
+                  transition: 'all 0.25s ease',
+                  fontSize: '0.95rem',
+                  boxShadow: categoriaActiva === cat
+                    ? '0 4px 12px rgba(29, 82, 242, 0.3)'
+                    : '0 1px 6px rgba(0,0,0,0.08)',
+                }}
+                onClick={() => handleCategoriaClick(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Animación */}
+          <style jsx>{`
             @keyframes slideInLeft {
-              from { transform: translateX(-100%); opacity: 0; }
-              to { transform: translateX(0); opacity: 1; }
+              from {
+                transform: translateX(-100%);
+                opacity: 0;
+              }
+              to {
+                transform: translateX(0);
+                opacity: 1;
+              }
+            }
+            .btn-close:hover {
+              background-color: #e9ecef;
+              border-radius: 50%;
             }
             @media (max-width: 600px) {
-              aside {
-                width: 95vw !important;
-                max-width: 99vw !important;
-                min-width: 120px !important;
+              .position-fixed {
+                width: '90vw';
+                padding: '20px 12px';
               }
-              .btn-close {
-                font-size: 1.3rem !important;
-              }
-              .fw-bold {
-                font-size: 0.8rem !important;
-              }
-              li {
-                font-size: 0.7rem !important;
-                padding-top: 4px !important;
-                padding-bottom: 4px !important;
+              h5 {
+                font-size: 1.1rem;
               }
             }
           `}</style>
         </div>
+      )}
+
+      {/* Overlay oscuro al abrir el panel */}
+      {showCategorias && (
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100"
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            zIndex: 1999,
+            animation: 'fadeIn 0.3s',
+          }}
+          onClick={() => setShowCategorias(false)}
+        ></div>
       )}
     </>
   );
