@@ -7,8 +7,8 @@ const Card = ({
   titulo = 'Nombre del Juego',
   lanzamiento = '2025-08-05',
   precio = 0,
-  descuento = 0, // en porcentaje, ej: 20 para 20%
-  onComprar
+  descuento = 0, // Porcentaje de descuento (ej: 20)
+  onComprar,
 }) => {
   const [isFav, setIsFav] = useState(false);
 
@@ -19,133 +19,168 @@ const Card = ({
 
   return (
     <div
-      className="position-relative overflow-hidden"
+      className="position-relative overflow-hidden h-100"
       style={{
         width: '100%',
-        maxWidth: '320px',
-        borderRadius: '20px',
+        maxWidth: '340px', // Un poco más ancho para pantallas grandes
+        borderRadius: '16px', // Menos redondeado en móviles
         background: '#ffffff',
-        boxShadow: '0 8px 32px #00000015',
-        transition: 'transform .25s, box-shadow .25s',
-        cursor: 'pointer'
+        boxShadow: '0 6px 24px rgba(0, 0, 0, 0.12)',
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+        cursor: 'pointer',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-4px)';
-        e.currentTarget.style.boxShadow = '0 12px 48px #00000025';
+        e.currentTarget.style.transform = 'translateY(-6px)';
+        e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 0, 0, 0.2)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 8px 32px #00000015';
+        e.currentTarget.style.boxShadow = '0 6px 24px rgba(0, 0, 0, 0.12)';
       }}
     >
-      {/* Imagen con overlay */}
+      {/* Imagen del juego */}
       <div className="position-relative">
         <img
           src={image}
           alt={titulo}
           style={{
             width: '100%',
-            height: '190px',
+            height: '180px', // Ajustado para móviles
             objectFit: 'cover',
-            borderTopLeftRadius: '20px',
-            borderTopRightRadius: '20px'
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
           }}
+          loading="lazy" // Mejora performance
         />
+        {/* Overlay gradiente */}
         <div
           className="position-absolute top-0 start-0 w-100 h-100"
           style={{
-            background: 'linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.6) 100%)',
-            borderTopLeftRadius: '20px',
-            borderTopRightRadius: '20px'
+            background: 'linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.7))',
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
           }}
         />
       </div>
 
-      {/* Badge descuento */}
+      {/* Badge de descuento */}
       {descuento > 0 && (
         <div
           className="position-absolute top-2 start-2 badge bg-danger"
-          style={{ fontSize: '0.75rem', padding: '6px 10px', borderRadius: '12px' }}
+          style={{
+            fontSize: '0.75rem',
+            padding: '6px 10px',
+            borderRadius: '12px',
+            fontWeight: 'bold',
+          }}
         >
           -{descuento}%
         </div>
       )}
 
-      {/* Botón favorito */}
+      {/* Botón de favorito */}
       <button
-        className="btn btn-sm position-absolute top-2 end-2"
+        className="btn btn-sm position-absolute top-2 end-2 d-flex align-items-center justify-content-center"
         style={{
-          width: '34px',
-          height: '34px',
+          width: '36px',
+          height: '36px',
           borderRadius: '50%',
-          background: 'rgba(255,255,255,.25)',
+          background: 'rgba(255, 255, 255, 0.25)',
           backdropFilter: 'blur(6px)',
-          color: isFav ? '#ff3b5c' : '#fff',
           border: 'none',
-          transition: 'color .2s'
+          color: isFav ? '#ff3b5c' : '#fff',
+          transition: 'all 0.2s ease',
+          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
         }}
         onClick={(e) => {
           e.stopPropagation();
           setIsFav(!isFav);
         }}
+        aria-label={isFav ? 'Eliminar de favoritos' : 'Agregar a favoritos'}
       >
-        <i className={`pi ${isFav ? 'pi-heart-fill' : 'pi-heart'}`}></i>
+        <i className={`pi ${isFav ? 'pi-heart-fill' : 'pi-heart'}`} style={{ fontSize: '1rem' }}></i>
       </button>
 
       {/* Contenido */}
-      <div className="p-3" style={{ minHeight: '130px', display: 'flex', flexDirection: 'column' }}>
+      <div
+        className="p-3"
+        style={{
+          minHeight: '140px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
+        {/* Título */}
         <h6
-          className="fw-bold mb-1"
+          className="fw-bold mb-1 text-truncate"
           style={{
             fontSize: '1.05rem',
-            fontFamily: "'Montserrat', 'Arial', sans-serif",
+            fontFamily: "'Montserrat', sans-serif",
             color: '#1D52F2',
-            lineHeight: 1.2
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           }}
+          title={titulo}
         >
           {titulo}
         </h6>
 
-        <small className="text-muted mb-2">
+        {/* Fecha de lanzamiento */}
+        <small className="text-muted mb-2 d-flex align-items-center">
           <i className="pi pi-calendar me-1"></i>
           {new Date(lanzamiento).toLocaleDateString('es-ES', {
             year: 'numeric',
-            month: 'short'
+            month: 'short',
           })}
         </small>
 
         {/* Precio */}
-        <div className="mt-auto">
+        <div className="d-flex align-items-center mb-2">
           {descuento > 0 && (
-            <small className="text-decoration-line-through text-muted me-1">
+            <small className="text-decoration-line-through text-muted me-2">
               ${precio.toFixed(2)}
             </small>
           )}
-          <span className="fw-bold text-success" style={{ fontSize: '1.2rem' }}>
+          <span
+            className="fw-bold text-success"
+            style={{
+              fontSize: '1.25rem',
+            }}
+          >
             ${finalPrice}
           </span>
         </div>
 
+        {/* Botón de compra */}
         <button
-          className="btn btn-primary w-100 d-flex align-items-center justify-content-center mt-2"
+          className="btn w-100 d-flex align-items-center justify-content-center py-2"
           style={{
             borderRadius: '12px',
-            fontWeight: 'bold',
+            fontWeight: '600',
             fontSize: '0.95rem',
-            background: 'linear-gradient(90deg,#1D52F2 0%, #3a7afe 100%)',
+            background: 'linear-gradient(90deg, #1D52F2 0%, #3a7afe 100%)',
+            color: '#fff',
             border: 'none',
-            boxShadow: '0 2px 8px #1D52F250',
-            transition: 'filter .2s'
+            boxShadow: '0 3px 10px rgba(29, 82, 242, 0.4)',
+            transition: 'all 0.2s ease',
           }}
-          onMouseEnter={(e) => (e.target.style.filter = 'brightness(1.1)')}
-          onMouseLeave={(e) => (e.target.style.filter = 'brightness(1)')}
+          onMouseEnter={(e) => {
+            e.target.style.transform = 'translateY(-1px)';
+            e.target.style.boxShadow = '0 5px 16px rgba(29, 82, 242, 0.5)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 3px 10px rgba(29, 82, 242, 0.4)';
+          }}
           onClick={(e) => {
             e.stopPropagation();
             onComprar?.();
           }}
         >
           <i className="pi pi-shopping-cart me-2"></i>
-          Comprar ahora
+          Comprar
         </button>
       </div>
     </div>

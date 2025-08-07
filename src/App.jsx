@@ -1,25 +1,34 @@
-import { useState } from 'react'
-import './App.css'
-import Header from './components/Header'
-import Categorias from './components/Categorias'
-import Carrusel from './components/carrusel'
-import JuegosPCGrid from './components/JuegosPCGrid'
-
+import { useState } from 'react';
+import './App.css';
+import Header from './components/Header';
+import Categorias from './components/Categorias';
+import Carrusel from './components/carrusel';
+import JuegosGrid from './components/JuegosPCGrid'; // componente que filtra por plataforma y categoría
+import Footer from './components/footer';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Estado para plataforma y categoría seleccionada
+  const [plataformaSeleccionada, setPlataformaSeleccionada] = useState('PC');
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
 
   return (
     <>
       <Header />
-      <div className="mb-1"></div> {/* Espacio pequeño */}
-      <Categorias />
-       <div className="mb-1"></div> {/* Espacio pequeño */}
+      <div className="mb-1"></div>
+      <Categorias
+        onPlataformaSeleccionada={setPlataformaSeleccionada}
+        onCategoriaSeleccionada={setCategoriaSeleccionada}
+      />
+      <div className="mb-1"></div>
       <Carrusel />
-      <JuegosPCGrid />
-      
+      <JuegosGrid
+        plataforma={plataformaSeleccionada}
+        categoria={categoriaSeleccionada}
+      />
+
+      <Footer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
