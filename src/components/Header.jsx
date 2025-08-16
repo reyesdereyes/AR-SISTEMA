@@ -1,5 +1,6 @@
 import 'primeicons/primeicons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
@@ -68,9 +69,9 @@ const Header = () => {
 
           <ul className="navbar-nav flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-3 text-white mt-3 mt-lg-0">
             <li className="nav-item">
-              <a href="#" className="nav-link text-white d-flex align-items-center">
+              <Link to="/registro" className="nav-link text-white d-flex align-items-center">
                 <i className="pi pi-user me-1"></i> Registrarse
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
               <a href="#" className="nav-link fw-bold text-white d-flex align-items-center">

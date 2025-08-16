@@ -1,33 +1,18 @@
 import { useState } from 'react';
-import './App.css';
-import Header from './components/Header';
-import Categorias from './components/Categorias';
-import Carrusel from './components/carrusel';
-import JuegosGrid from './components/JuegosPCGrid'; // componente que filtra por plataforma y categoría
-import Footer from './components/footer';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Inicio from './pages/Inicio';
+import Registro from './pages/Registro'; // Ajusta según la ruta real
 
 function App() {
-  // Estado para plataforma y categoría seleccionada
-  const [plataformaSeleccionada, setPlataformaSeleccionada] = useState('PC');
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
+  const [count, setCount] = useState(0);
 
   return (
-    <>
-      <Header />
-      <div className="mb-1"></div>
-      <Categorias
-        onPlataformaSeleccionada={setPlataformaSeleccionada}
-        onCategoriaSeleccionada={setCategoriaSeleccionada}
-      />
-      <div className="mb-1"></div>
-      <Carrusel />
-      <JuegosGrid
-        plataforma={plataformaSeleccionada}
-        categoria={categoriaSeleccionada}
-      />
-
-      <Footer />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Inicio />} />
+        <Route path="/registro" element={<Registro />} />
+      </Routes>
+    </Router>
   );
 }
 
